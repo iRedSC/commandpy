@@ -1,5 +1,5 @@
 import sys
-from compy import Engine, Parser, passcommand
+from compy import Engine, Parser
 
 
 engine = Engine()
