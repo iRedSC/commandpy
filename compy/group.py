@@ -1,5 +1,7 @@
 from .command import Command
 
+__all__ = ["Group", "group"]
+
 
 class Group:
     def __init__(self, name: str = None):

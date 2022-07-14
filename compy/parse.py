@@ -2,6 +2,8 @@ import re
 from tokenstream import Token, TokenStream
 from .engine import Engine
 
+__all__ = ["Parser", "find_command"]
+
 
 class Parser:
     def __init__(self, engine: Engine = None):

@@ -1,5 +1,7 @@
 from typing import Any, Callable, Optional
 
+__all__ = ["Command"]
+
 
 class Command:
     """A class that holds some information about a command."""

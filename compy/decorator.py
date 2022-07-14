@@ -2,6 +2,9 @@ from typing import Callable, Protocol
 from .command import Command
 
 
+__all__ = ["DecoratorCommand", "create_decorator_command"]
+
+
 class Engine(Protocol):
     ...
 

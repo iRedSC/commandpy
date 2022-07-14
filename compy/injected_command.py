@@ -2,6 +2,8 @@ from .group import Group
 from typing import Callable
 from .protocols import CommandRef, Engine
 
+__all__ = ["InjectedCommand", "inject_command"]
+
 
 class InjectedCommand:
     """

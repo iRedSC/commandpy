@@ -4,6 +4,8 @@ from .group import Group
 from .decorator import create_decorator_command
 from .injected_command import inject_command
 
+__all__ = ["CommandRef", "Engine"]
+
 
 class CommandRef:
     def __init__(
