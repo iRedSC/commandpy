@@ -1,2 +1,3 @@
-# compy
- 
+# Compy - Create Commands with Ease.
+
+...

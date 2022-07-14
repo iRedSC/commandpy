@@ -49,6 +49,30 @@ class CommandRef:
 
 
 class Engine:
+    """
+    The Engine holds a group of base commands,
+    and can be passed to a parser to search commands
+    registered under itself.
+
+    Creating an Engine is as simple as creating a new object.
+    >>> engine = Engine()
+
+    Then use the command decorator to register a function as
+    a command.
+    >>> @engine.command
+    ... def greeting() -> str:
+    ...    ...
+
+    Commands can be registers to multiple Engines.
+    >>> engine_2 = Engine()
+
+    >>> @engine_2.command
+    ... @engine.command
+    ... def greeting() -> str:
+    ...     ...s
+
+    """
+
     def __init__(self):
         self.__commands__: dict[str, CommandRef] = {}
         self.groups: dict[str, Group] = {}
