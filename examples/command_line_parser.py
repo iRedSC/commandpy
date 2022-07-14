@@ -1,5 +1,5 @@
 import sys
-from compy import Engine, Parser
+from compy import Engine, Parser, passcommand
 
 
 engine = Engine()
@@ -11,7 +11,7 @@ def quit():
 
 
 @engine.command(name="file")
-def _file(_file):
+def file_(_file):
     try:
         with open(_file, "r") as f:
             print(f.read())
@@ -19,7 +19,7 @@ def _file(_file):
         print("That file doesn't exist.")
 
 
-@_file.subcommand
+@file_.subcommand
 def create(_file, *contents):
     try:
         with open(_file, "x") as f:

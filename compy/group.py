@@ -1,4 +1,4 @@
-from .command import Command
+from .decorator import DecoratorCommand
 
 __all__ = ["Group", "group"]
 
@@ -9,17 +9,17 @@ class Group:
         self.commands = []
 
 
-def group(name: Group):
-    def decorator(dccmd: Command):
-        if not dccmd.last_engine.groups.get(name):
+def group(name: str):
+    def decorator(cmd: DecoratorCommand):
+        if not cmd.last_engine.groups.get(name):
             group = Group(name=name)
-            dccmd.last_engine.groups[name] = group
-            cmd = dccmd.last_engine.__commands__[dccmd.name]
+            cmd.last_engine.groups[name] = group
+            cmd = cmd.last_engine.__commands__[cmd.name]
             if not cmd.groups.get(name):
                 cmd.groups[name] = group
         else:
-            group = dccmd.last_engine.groups[name]
-        group.commands.append(dccmd)
-        return dccmd
+            group = cmd.last_engine.groups[name]
+        group.commands.append(cmd)
+        return cmd
 
     return decorator

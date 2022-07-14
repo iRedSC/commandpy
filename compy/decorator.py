@@ -56,7 +56,7 @@ def create_decorator_command(
     name: str = None,
     aliases: list[str] = None,
     passcommand: bool = False,
-):
+) -> DecoratorCommand:
     if isinstance(func, DecoratorCommand):
         if passcommand == True:
             raise PassCommandError("@passcommand decorator must be applied first.")

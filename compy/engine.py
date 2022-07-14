@@ -1,7 +1,7 @@
 from typing import Callable
 from .command import Command
 from .group import Group
-from .decorator import create_decorator_command
+from .decorator import DecoratorCommand, create_decorator_command
 from .injected_command import inject_command
 
 __all__ = ["CommandRef", "Engine"]
@@ -71,7 +71,7 @@ class Engine:
     >>> @engine_2.command
     ... @engine.command
     ... def greeting() -> str:
-    ...     ...s
+    ...     ...
 
     """
 
@@ -88,8 +88,8 @@ class Engine:
         func: Callable = None,
         name: str = None,
         aliases: list[str] = None,
-    ) -> Callable:
-        def decorator(func):
+    ) -> DecoratorCommand:
+        def decorator(func) -> DecoratorCommand:
             cmd = create_decorator_command(func, self, name, aliases)
             cmdref = CommandRef(
                 command=cmd.command,
