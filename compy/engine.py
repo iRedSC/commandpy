@@ -8,6 +8,14 @@ __all__ = ["CommandRef", "Engine"]
 
 
 class CommandRef:
+    """
+    Holds a reference of a command along with engine-specific
+    data, such as aliases and groups.
+
+    CommandRef's are not directly interactable by the end-user,
+    and are transformed into the more user friendly InjectedCommand.
+    """
+
     def __init__(
         self,
         command: "Command",
@@ -59,7 +67,7 @@ class Engine:
     Creating an Engine is as simple as creating a new object.
     >>> engine = Engine()
 
-    Then use the command decorator to register a function as
+    Then use the command method decorator to register a function as
     a command.
     >>> @engine.command
     ... def greeting() -> str:
@@ -97,6 +105,7 @@ class Engine:
                 name=name if name else cmd.name,
                 aliases=aliases,
             )
+            cmdref.command.addref(self, cmdref)
 
             self.__commands__[name if name else cmd.name] = cmdref
             return cmd

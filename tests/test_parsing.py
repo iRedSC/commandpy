@@ -23,3 +23,12 @@ def test_parse_string():
         "hello",
         " world that is amazing ",
     ]
+
+
+def test_parse_list():
+
+    with Parser() as parser:
+        assert parser.clean("hello [world, 1, 2, 3]") == ["hello", ["world", 1, 2, 3]]
+        assert parser.clean("[][][]") == [[], [], []]
+        assert parser.clean("[[[]]]") == [[[]]]
+        assert parser.clean("[[]]]") == [["]"]]

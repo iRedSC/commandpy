@@ -1,4 +1,7 @@
 from typing import Callable, Protocol
+from compy.exceptions import EngineNotRegistered, PassCommandError
+
+from compy.injected_command import inject_command
 from .command import Command
 
 
@@ -25,6 +28,17 @@ class DecoratorCommand:
         self.passcommand = passcommand
 
     def __call__(self, *args, **kwargs):
+        def __passcmd(engine: Engine):
+            try:
+                cmdref = self.command.refs[engine]
+            except KeyError:
+                raise EngineNotRegistered(
+                    "The engine that was passed was not registered to this command."
+                )
+            return self.command(inject_command(cmdref), *args, **kwargs)
+
+        if self.passcommand:
+            return __passcmd
         return self.command(*args, **kwargs)
 
     def subcommand(
@@ -44,10 +58,6 @@ class DecoratorCommand:
             return decorator(func)
         else:
             return decorator
-
-
-class PassCommandError(Exception):
-    pass
 
 
 def create_decorator_command(

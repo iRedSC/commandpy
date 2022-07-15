@@ -1,5 +1,7 @@
 from typing import Any, Callable, Optional
 
+from compy.protocols import CommandRef, Engine
+
 __all__ = ["Command"]
 
 
@@ -23,11 +25,15 @@ class Command:
         self.aliases.append(name)
         self.parent = parent
         self.passcommand = passcommand
+        self.refs: dict[Engine, CommandRef] = {}
         self.help = "No help desciption provided."
 
     def __call__(self, *args: Any, **kwargs: Any) -> Any:
         """Return called function when the object is called"""
         return self.func(*args, **kwargs)
+
+    def addref(self, engine: Engine, ref: CommandRef):
+        self.refs[engine] = ref
 
     def retrieve(self, *args: Any, **kwargs: Any) -> Any:
         """Sets self.execute to a ready to execute function."""

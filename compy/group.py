@@ -1,4 +1,4 @@
-from .decorator import DecoratorCommand
+from .protocols import DecoratorCommand
 
 __all__ = ["Group", "group"]
 

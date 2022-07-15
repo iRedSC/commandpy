@@ -9,8 +9,12 @@ class Command(Protocol):
     aliases: list[str]
     parent: "Command"
     help: str
+    refs: dict["Engine", "CommandRef"]
 
     def retrieve(self, *args: Any, **kwargs: Any) -> Any:
+        ...
+
+    def addref(self, engine: "Engine", ref: "CommandRef") -> None:
         ...
 
 

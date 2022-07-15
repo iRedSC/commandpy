@@ -21,6 +21,9 @@ class Parser:
     def parse(self, string):
         return find_command(self.engine, self.clean(string))
 
+    def __call__(self, string):
+        return self.parse(string)
+
 
 def find_command(engine: Engine, args: list[str]) -> ...:
     if not len(args) > 0:
@@ -46,7 +49,10 @@ def unquote_string(token: Token) -> str:
 
 def _parse(stream: TokenStream):
     with stream.syntax(
-        brace=r"\[|\]", number=r"\d+", word=r"[^\"\[\]\s]+", string=r'"(?:\\.|[^"\\])*"'
+        brace=r"\[|\]",
+        number=r"\d+",
+        word=r"[^\"\[\]\s]+",
+        string=r'"(?:\\.|[^"\\])*"',
     ):
         brace, number, word, string = stream.expect(
             ("brace", "["), "number", "word", "string"
@@ -58,4 +64,4 @@ def _parse(stream: TokenStream):
         elif number:
             return int(number.value)
         elif word:
-            return word.value
+            return word.value.strip(",")
