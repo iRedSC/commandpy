@@ -178,8 +178,8 @@ from compy import passcommand
 
 @engine.command
 @passcommand
-def list_commands(self, ...):
-    ...
+def list_commands(self):
+    return [command for command in self.engine.commands]
 ```
 An `InjectedCommand` will be injected into the first parameter of the function.
 
