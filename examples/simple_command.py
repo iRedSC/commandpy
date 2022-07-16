@@ -1,7 +1,7 @@
-from compy import Engine
-from compy.injected_command import InjectedCommand
-from compy.parse import Parser
-from compy.passcommand import passcommand
+from commandpy import Engine
+from commandpy.injected_command import InjectedCommand
+from commandpy.parse import Parser
+from commandpy.passcommand import passcommand
 
 engine = Engine()
 engine2 = Engine()

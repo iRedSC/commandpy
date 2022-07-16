@@ -1,5 +1,5 @@
 import pytest
-from compy import Engine, DecoratorCommand, Parser
+from commandpy import Engine, DecoratorCommand, Parser
 
 
 @pytest.fixture

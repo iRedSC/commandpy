@@ -1,4 +1,4 @@
-from compy import __version__
+from commandpy import __version__
 
 
 def test_version():

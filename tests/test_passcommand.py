@@ -1,5 +1,5 @@
 import pytest
-from compy import (
+from commandpy import (
     Engine,
     DecoratorCommand,
     PassCommandError,

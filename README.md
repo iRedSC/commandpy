@@ -1,9 +1,9 @@
-# Compy - Create Commands with Ease.
+# Commandpy - Create Commands with Ease.
 
-Compy lets you easily create commands that can be parsed from a string.
+Commandpy lets you easily create commands that can be parsed from a string.
 
 ```py
-from compy import Engine, Parser
+from commandpy import Engine, Parser
 
 engine = Engine()
 
@@ -33,7 +33,7 @@ So that does- that, but it's not a command yet. To make it a command, we need to
 
 To make an Engine, we just import `Engine` and make a new instance.
 ```py
-from compy import Engine
+from commandpy import Engine
 
 engine = Engine()
 ```
@@ -41,7 +41,7 @@ engine = Engine()
 Now that we have an Engine, we can use its `command` method to register the function as a command and add it to our Engine.
 
 ```py
-from compy import Engine
+from commandpy import Engine
 
 engine = Engine()
 
@@ -53,7 +53,7 @@ def greeting(person: str) -> str:
 Congrats! You made your first command. Now if you want to parse and run this command, you need to import the `Parser`.
 
 ```py
-from compy import Parser
+from commandpy import Parser
 ```
 The Parser can be used as a context manager and accepts an Engine as it's only parameter.
 ```py
@@ -73,7 +73,7 @@ with Parser(engine) as parse:
 
 You can register a command to multiple engines by stacking the decorators:
 ```py
-from compy import Engine
+from commandpy import Engine
 
 engine1 = Engine()
 engine2 =  Engine()
@@ -102,7 +102,7 @@ Commands can also have a list of aliases using the `aliases=` parameter (This wi
 
 Commands can have subcommands connected to them, using the `subcommand` method decorator:
 ```py
-from compy import Engine
+from commandpy import Engine
 
 engine = Engine()
 
@@ -134,7 +134,7 @@ def __many(...):
 ---
 ## Parser
 
-Compy uses a very simple parser that outputs based on a few simple rules:
+Commandpy uses a very simple parser that outputs based on a few simple rules:
 
  - Arguments are split by spaces.
  - "Quotes" will keep everything inside of them intact.
@@ -157,7 +157,7 @@ When finding a command, the parser will just look for any command/subcommand nam
 You can add commands to groups by using the `group` decorator:
 ```py
 
-from compy import Engine, group
+from commandpy import Engine, group
 
 engine = Engine()
 
@@ -174,7 +174,7 @@ Groups will be added to the engine that is below them, and a dictionary of `{"gr
 
 You can get the command as a parameter in your function by using the `passcommand` decorator:
 ```py
-from compy import passcommand
+from commandpy import passcommand
 
 @engine.command
 @passcommand

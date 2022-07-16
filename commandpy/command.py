@@ -1,6 +1,6 @@
 from typing import Any, Callable, Optional
 
-from compy.protocols import CommandRef, Engine
+from commandpy.protocols import CommandRef, Engine
 
 __all__ = ["Command"]
 

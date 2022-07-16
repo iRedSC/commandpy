@@ -1,5 +1,5 @@
 import pytest
-from compy import Engine, Parser, passcommand, group
+from commandpy import Engine, Parser, passcommand, group
 
 
 @pytest.fixture

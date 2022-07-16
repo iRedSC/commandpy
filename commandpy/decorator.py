@@ -1,7 +1,7 @@
 from typing import Callable, Protocol
-from compy.exceptions import EngineNotRegistered, PassCommandError
+from commandpy.exceptions import EngineNotRegistered, PassCommandError
 
-from compy.injected_command import inject_command
+from commandpy.injected_command import inject_command
 from .command import Command
 
 

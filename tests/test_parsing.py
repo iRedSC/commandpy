@@ -1,4 +1,4 @@
-from compy import Parser
+from commandpy import Parser
 
 
 def test_parse_single_arg():
