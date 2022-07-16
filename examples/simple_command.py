@@ -1,5 +1,6 @@
 from compy import Engine
 from compy.injected_command import InjectedCommand
+from compy.parse import Parser
 from compy.passcommand import passcommand
 
 engine = Engine()
@@ -21,3 +22,8 @@ def listcommands(self: InjectedCommand):
 add(1, 2, 3, 4, 5)
 for command in listcommands()(engine):
     print(command)
+
+with Parser(engine) as parse:
+    result = parse("add 1 2 3 4 5")
+
+    print(result.execute())

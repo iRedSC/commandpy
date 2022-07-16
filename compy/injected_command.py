@@ -40,10 +40,12 @@ class InjectedCommand:
     @property
     def children(self):
         """Returns an InjectedCommand version of the children"""
-        return inject_command(
-            self.__cmdref__.childref(child)
-            for child in self.__cmdref__.command.children
-        )
+        return [
+            inject_command(
+                self.__cmdref__.childref(child)
+                for child in self.__cmdref__.command.children
+            )
+        ]
 
     def retrieve(self, *args, **kwargs):
         """Sets self.execute to a ready-to-execute function."""

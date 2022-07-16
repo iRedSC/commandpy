@@ -63,7 +63,6 @@ def parse_list(stream: TokenStream):
 
 
 def parse_token(token: Token, stream: TokenStream):
-    print(stream.current.value)
     match token:
         case Token(type="brace"):
             return [(parse_list(stream)) for _ in stream.peek_until(("brace", "]"))]
