@@ -16,7 +16,7 @@ class Parser:
         pass
 
     def clean(self, string):
-        return _parse(TokenStream(f"[{string}]"))
+        return parse(TokenStream(string))
 
     def parse(self, string):
         return find_command(self.engine, self.clean(string))
@@ -47,21 +47,42 @@ def unquote_string(token: Token) -> str:
     return ESCAPE_REGEX.sub(lambda match: ESCAPE_SEQUENCES[match[0]], token.value[1:-1])
 
 
-def _parse(stream: TokenStream):
+def parse_list(stream: TokenStream):
+    with stream.syntax(
+        comma=r",\s*", number=r"\d+", entry=r"[^\"\[\],]+"
+    ), stream.ignore("comma"):
+        match stream.expect_any("entry", "string", "number", ("brace", "[")):
+            case Token(type="brace"):
+                return [(parse_list(stream)) for _ in stream.peek_until(("brace", "]"))]
+            case Token(type="number") as number:
+                return int(number.value)
+            case Token(type="entry") as entry:
+                return entry.value
+            case Token(type="string") as string:
+                return unquote_string(string)
+
+
+def parse_token(token: Token, stream: TokenStream):
+    print(stream.current.value)
+    match token:
+        case Token(type="brace"):
+            return [(parse_list(stream)) for _ in stream.peek_until(("brace", "]"))]
+        case Token(type="string") as string:
+            return unquote_string(string)
+        case Token(type="number") as number:
+            return int(number.value)
+        case Token(type="word") as word:
+            return word.value
+
+
+def parse(stream: TokenStream):
     with stream.syntax(
         brace=r"\[|\]",
         number=r"\d+",
         word=r"[^\"\[\]\s]+",
         string=r'"(?:\\.|[^"\\])*"',
     ):
-        brace, number, word, string = stream.expect(
-            ("brace", "["), "number", "word", "string"
-        )
-        if brace:
-            return [_parse(stream) for _ in stream.peek_until(("brace", "]"))]
-        elif string:
-            return unquote_string(string)
-        elif number:
-            return int(number.value)
-        elif word:
-            return word.value.strip(",")
+        return [
+            parse_token(token, stream)
+            for token in stream.collect_any(("brace", "["), "number", "word", "string")
+        ]
