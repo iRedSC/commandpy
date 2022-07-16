@@ -1,8 +1,8 @@
-from typing import Any, Callable, Optional
+from typing import Callable, Optional
 
-from commandpy.protocols import CommandRef, Engine
-from commandpy.exceptions import EngineNotRegistered, InjectCommandError
-from commandpy.injected_command import inject_command
+from .protocols import CommandRef, Engine
+from .exceptions import EngineNotRegistered, InjectCommandError
+from .injected_command import inject_command
 
 __all__ = ["Command", "create_command"]
 

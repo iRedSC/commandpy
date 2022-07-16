@@ -170,20 +170,20 @@ def calc(...):
 Groups will be added to the engine that is below them, and a dictionary of `{"group_name": Group}` can be accessed via `Engine.groups`.
 
 ---
-## Passcommand
+## Injectcommand
 
-You can get the command as a parameter in your function by using the `passcommand` decorator:
+You can get the command as a parameter in your function by using the `injectcommand` decorator:
 ```py
-from commandpy import passcommand
+from commandpy import injectcommand
 
 @engine.command
-@passcommand
+@injectcommand
 def list_commands(self):
     return [command for command in self.engine.commands]
 ```
 An `InjectedCommand` will be injected into the first parameter of the function.
 
-**The passcommand decorator must be applied directly above the function** else an exception will be raised.
+**The injectcommand decorator must be applied directly above the function** else an exception will be raised.
 
 ---
 ## InjectedCommand

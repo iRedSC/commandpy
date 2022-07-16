@@ -6,6 +6,6 @@ from .injectcommand import *
 from .parse import *
 from .exceptions import *
 
-__all__ = ["Engine", "group", "injectcommand"]
+__all__ = ["Engine", "group", "injectcommand", "Parser"]
 
 __version__ = "0.2.0"
