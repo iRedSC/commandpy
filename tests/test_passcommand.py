@@ -1,10 +1,10 @@
 import pytest
 from commandpy import (
     Engine,
-    DecoratorCommand,
-    PassCommandError,
+    Command,
+    InjectCommandError,
     Parser,
-    passcommand,
+    injectcommand,
     InjectedCommand,
 )
 
@@ -19,30 +19,30 @@ def parse_command(string, engine):
 
 
 def test_decorator(engine: Engine):
-    @passcommand
+    @injectcommand
     def greeting(cmd):
         return "hello"
 
-    assert isinstance(greeting, DecoratorCommand)
-    assert greeting.passcommand == True
+    assert isinstance(greeting, Command)
+    assert greeting.injectcommand == True
 
 
 def test_passcommand_command(engine: Engine):
     @engine.command
-    @passcommand
+    @injectcommand
     def about(self):
         return self.name
 
-    assert parse_command("about", engine).__passcommand__ == True
+    assert parse_command("about", engine).__injectcommand__ == True
     assert isinstance(parse_command("about", engine), InjectedCommand)
-    assert parse_command("about", engine).execute() == "about"
+    assert parse_command("about", engine)() == "about"
 
 
 def test_passcommand_exception(engine: Engine):
 
-    with pytest.raises(PassCommandError):
+    with pytest.raises(InjectCommandError):
 
-        @passcommand
+        @injectcommand
         @engine.command
         def greeting():
             return "hello"

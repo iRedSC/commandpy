@@ -1,5 +1,5 @@
 import sys
-from commandpy import Engine, Parser, passcommand
+from commandpy import Engine, Parser, injectcommand
 
 
 engine = Engine()

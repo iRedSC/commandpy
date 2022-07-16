@@ -1,7 +1,7 @@
 from commandpy import Engine
 from commandpy.injected_command import InjectedCommand
 from commandpy.parse import Parser
-from commandpy.passcommand import passcommand
+from commandpy.injectcommand import injectcommand
 
 engine = Engine()
 engine2 = Engine()
@@ -13,7 +13,7 @@ def add(*nums) -> int | float:
 
 
 @engine.command
-@passcommand
+@injectcommand
 def listcommands(self: InjectedCommand):
     for command in self.engine.commands:
         yield command

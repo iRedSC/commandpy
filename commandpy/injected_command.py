@@ -14,8 +14,7 @@ class InjectedCommand:
     def __init__(
         self,
         __cmdref__: CommandRef,
-        __passcommand__: bool,
-        __func__: Callable,
+        __injectcommand__: bool,
         name: str,
         aliases: list[str],
         engine: Engine,
@@ -24,8 +23,7 @@ class InjectedCommand:
     ):
         # the CommandRef that was turned into an InjectedCommand
         self.__cmdref__ = __cmdref__
-        self.__passcommand__ = __passcommand__
-        self.__func__ = __func__
+        self.__injectcommand__ = __injectcommand__
         self.name = name
         self.aliases = aliases
         self.engine = engine
@@ -47,23 +45,25 @@ class InjectedCommand:
             )
         ]
 
+    def __call__(self):
+        return self.__execute()
+
     def retrieve(self, *args, **kwargs):
         """Sets self.execute to a ready-to-execute function."""
 
         def waiting_to_execute():
-            if self.__passcommand__ == True:
-                return self.__func__(self, *args, **kwargs)
-            return self.__func__(*args, **kwargs)
+            if self.__injectcommand__ == True:
+                return self.__cmdref__.command(*args, **kwargs)(self.engine)
+            return self.__cmdref__.command(*args, **kwargs)
 
-        self.execute = waiting_to_execute
+        self.__execute = waiting_to_execute
         return self
 
 
 def inject_command(cmdref: CommandRef):
     cmd = InjectedCommand(
         __cmdref__=cmdref,
-        __passcommand__=cmdref.command.passcommand,
-        __func__=cmdref.command.func,
+        __injectcommand__=cmdref.command.injectcommand,
         name=cmdref.name,
         aliases=cmdref.aliases,
         engine=cmdref.engine,

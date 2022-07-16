@@ -2,5 +2,5 @@ class EngineNotRegistered(Exception):
     pass
 
 
-class PassCommandError(Exception):
+class InjectCommandError(Exception):
     pass

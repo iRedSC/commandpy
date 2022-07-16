@@ -1,7 +1,6 @@
 from typing import Callable
-from .command import Command
+from .command import Command, create_command
 from .group import Group
-from .decorator import DecoratorCommand, create_decorator_command
 from .injected_command import inject_command
 
 __all__ = ["CommandRef", "Engine"]
@@ -31,11 +30,14 @@ class CommandRef:
         self.engine = engine
         self.groups = groups if groups else {}
 
-    def __call__(self, *args, **kwargs):
-        return self.command(*args, **kwargs)
-
-    def retrieve(self):
-        return self.command.retrieve
+    def copy_ref(self, child: Command) -> "CommandRef":
+        return CommandRef(
+            command=child,
+            engine=self.engine,
+            name=child.name,
+            aliases=child.aliases,
+            groups=self.groups,
+        )
 
     def find_child(self, args: list[str | list[str]]):
         if not len(args) > 0:
@@ -45,17 +47,8 @@ class CommandRef:
         for child in self.command.children:
             if arg in child.aliases:
                 args.pop(0)
-                return self.childref(child).find_child(args)
+                return self.copy_ref(child).find_child(args)
         return inject_command(self).retrieve(*args)
-
-    def childref(self, child: Command) -> "CommandRef":
-        return CommandRef(
-            command=child,
-            engine=self.engine,
-            name=child.name,
-            aliases=child.aliases,
-            groups=self.groups,
-        )
 
 
 class Engine:
@@ -96,19 +89,19 @@ class Engine:
         func: Callable = None,
         name: str = None,
         aliases: list[str] = None,
-    ) -> DecoratorCommand:
-        def decorator(func) -> DecoratorCommand:
-            cmd = create_decorator_command(func, self, name, aliases)
+    ) -> Command:
+        def decorator(func) -> Command:
+            command = create_command(func, self, aliases)
             cmdref = CommandRef(
-                command=cmd.command,
+                command=command,
                 engine=self,
-                name=name if name else cmd.name,
+                name=name if name else command.name,
                 aliases=aliases,
             )
-            cmdref.command.addref(self, cmdref)
+            cmdref.command.refs[self] = cmdref
 
-            self.__commands__[name if name else cmd.name] = cmdref
-            return cmd
+            self.__commands__[name if name else command.name] = cmdref
+            return command
 
         if callable(func):
             return decorator(func)

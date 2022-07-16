@@ -19,7 +19,7 @@ class Command(Protocol):
 
 
 class DecoratorCommand(Protocol):
-    last_engine: "Engine"
+    __last_engine__: "Engine"
     command: Command
     func: Callable
     name: str

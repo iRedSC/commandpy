@@ -1,5 +1,5 @@
 import pytest
-from commandpy import Engine, DecoratorCommand, Parser
+from commandpy import Engine, Command, Parser
 
 
 @pytest.fixture
@@ -8,7 +8,7 @@ def engine():
 
 
 def _parse_command(cmd: str, engine: Engine):
-    return Parser(engine).parse(cmd).execute()
+    return Parser(engine).parse(cmd)()
 
 
 def test_create_simple_command(engine: Engine):
@@ -16,7 +16,7 @@ def test_create_simple_command(engine: Engine):
     def greeting() -> str:
         return "hello"
 
-    assert isinstance(greeting, DecoratorCommand)
+    assert isinstance(greeting, Command)
     assert _parse_command("greeting", engine) == "hello"
 
 
