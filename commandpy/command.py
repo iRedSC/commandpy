@@ -1,7 +1,7 @@
 from typing import Callable, Optional
 
 from .protocols import CommandRef, Engine
-from .exceptions import EngineNotRegistered, InjectCommandError
+from .exceptions import EngineNotRegistered, InjectCommandError, TooManyArguments
 from .injected_command import inject_command
 
 __all__ = ["Command", "create_command"]
@@ -42,11 +42,17 @@ class Command:
                 raise EngineNotRegistered(
                     "The engine that was passed was not registered to this command."
                 )
-            return self.__execute(inject_command(cmdref), *args, **kwargs)
+            try:
+                return self.__execute(inject_command(cmdref), *args, **kwargs)
+            except TypeError:
+                raise TooManyArguments("Too many arguments were passed to the command.")
 
         if self.injectcommand:
             return __passcmd
-        return self.__execute(*args, **kwargs)
+        try:
+            return self.__execute(*args, **kwargs)
+        except TypeError:
+            raise TooManyArguments("Too many arguments were passed to the command.")
 
     def subcommand(
         self,
@@ -57,7 +63,7 @@ class Command:
         """A decorator that creates a subcommand."""
 
         def decorator(func: Callable) -> Command:
-            cmd = create_command(func, None, name, aliases)
+            cmd = create_command(func, None, aliases, name)
             self.children.append(cmd)
             return cmd
 
@@ -72,6 +78,7 @@ def create_command(
     engine: Engine,
     aliases: list[str] = None,
     injectcommand: bool = False,
+    name: str = None,
 ) -> Command:
     if isinstance(func, Command):
         if injectcommand == True:
@@ -81,7 +88,7 @@ def create_command(
     return Command(
         last_engine=engine,
         func=func,
-        name=func.__name__,
+        name=func.__name__ if not name else name,
         parent=None,
         aliases=aliases,
         injectcommand=injectcommand,

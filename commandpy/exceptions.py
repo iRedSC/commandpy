@@ -4,3 +4,7 @@ class EngineNotRegistered(Exception):
 
 class InjectCommandError(Exception):
     pass
+
+
+class TooManyArguments(Exception):
+    pass

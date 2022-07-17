@@ -59,6 +59,9 @@ class InjectedCommand:
         self.__execute = waiting_to_execute
         return self
 
+    def execute(self):
+        return self()
+
 
 def inject_command(cmdref: CommandRef):
     cmd = InjectedCommand(
